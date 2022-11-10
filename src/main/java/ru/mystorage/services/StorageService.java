@@ -43,24 +43,14 @@ public class StorageService {
     }
 
     public ResponseModel delete(Integer id) {
-        try {
-            var storage = get(id);
-            storageRepository.delete(storage);
-            return new ResponseModel(200, "Информация о складе успешно удалена");
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new MyStorageException("Внутренняя ошибка сервиса", 500);
-        }
+        var storage = get(id);
+        storageRepository.delete(storage);
+        return new ResponseModel(200, "Информация о складе успешно удалена");
     }
 
     public Storage edit(Storage storage) {
-        try {
-            var existStorage = get(storage.getId());
-            existStorage.setName(storage.getName());
-            return existStorage;
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new MyStorageException("Внутренняя ошибка сервиса", 500);
-        }
+        var existStorage = get(storage.getId());
+        existStorage.setName(storage.getName());
+        return existStorage;
     }
 }
