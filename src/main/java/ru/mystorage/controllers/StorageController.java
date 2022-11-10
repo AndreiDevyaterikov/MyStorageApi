@@ -19,4 +19,19 @@ public class StorageController implements StorageControllerApi {
     public ResponseModel add(Storage storage) {
         return storageService.add(storage);
     }
+
+    @Override
+    public Storage get(Integer id) {
+        return storageService.get(id);
+    }
+
+    @Override
+    public ResponseModel delete(Integer id) {
+        return storageService.delete(id);
+    }
+
+    @Override
+    public Storage edit(Storage storage) {
+        return storageService.edit(storage);
+    }
 }
