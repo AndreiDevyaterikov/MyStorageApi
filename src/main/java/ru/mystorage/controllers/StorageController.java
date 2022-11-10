@@ -8,6 +8,8 @@ import ru.mystorage.models.ResponseModel;
 import ru.mystorage.models.Storage;
 import ru.mystorage.services.StorageService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/storage")
 @RequiredArgsConstructor
@@ -23,6 +25,11 @@ public class StorageController implements StorageControllerApi {
     @Override
     public Storage get(Integer id) {
         return storageService.get(id);
+    }
+
+    @Override
+    public List<Storage> getAll() {
+        return storageService.getAll();
     }
 
     @Override

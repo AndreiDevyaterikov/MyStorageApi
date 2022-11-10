@@ -3,10 +3,13 @@ package ru.mystorage.services;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import ru.mystorage.exceptions.MyStorageException;
 import ru.mystorage.models.ResponseModel;
 import ru.mystorage.models.Storage;
 import ru.mystorage.repositories.StorageRepository;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +42,20 @@ public class StorageService {
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new MyStorageException("Внутренняя ошибка сервиса", 500);
+        }
+    }
+
+    public List<Storage> getAll() {
+        try {
+            var storages = storageRepository.findAll();
+            if (CollectionUtils.isEmpty(storages)) {
+                throw new MyStorageException("Склады не найдены", 404);
+            } else {
+                return storages;
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new MyStorageException("Внутренняя ошибка сераиса", 500);
         }
     }
 
