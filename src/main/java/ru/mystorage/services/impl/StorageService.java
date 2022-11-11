@@ -49,6 +49,21 @@ public class StorageService implements IStorageService {
     }
 
     @Override
+    public Storage getByName(String storageName) {
+        try {
+            var existStorage = storageRepository.findByName(storageName);
+            if(existStorage.isPresent()) {
+                return existStorage.get();
+            } else {
+                throw new MyStorageException("Такого склада не существует", 404);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new MyStorageException("Внутренняя ошибка сераиса", 500);
+        }
+    }
+
+    @Override
     public List<Storage> getAll() {
         try {
             var storages = storageRepository.findAll();

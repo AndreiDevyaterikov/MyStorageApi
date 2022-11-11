@@ -8,6 +8,7 @@ import java.util.List;
 public interface IStorageService {
     ResponseModel add(Storage storage);
     Storage get(Integer id);
+    Storage getByName(String storageName);
     List<Storage> getAll();
     ResponseModel delete(Integer id);
     Storage edit(Storage storage);

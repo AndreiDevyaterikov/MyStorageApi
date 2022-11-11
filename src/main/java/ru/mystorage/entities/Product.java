@@ -1,7 +1,9 @@
 package ru.mystorage.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -16,9 +18,11 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Entity
+@Builder
+@AllArgsConstructor
 @Table(name = "products")
+@NoArgsConstructor
 public class Product {
     @Id
     @Column(name = "product_id")

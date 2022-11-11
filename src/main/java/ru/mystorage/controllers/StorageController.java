@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mystorage.controllers.api.StorageControllerApi;
-import ru.mystorage.models.ResponseModel;
 import ru.mystorage.entities.Storage;
-import ru.mystorage.services.impl.StorageService;
+import ru.mystorage.models.ResponseModel;
+import ru.mystorage.services.IStorageService;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StorageController implements StorageControllerApi {
 
-    private final StorageService storageService;
+    private final IStorageService storageService;
 
     @Override
     public ResponseModel add(Storage storage) {

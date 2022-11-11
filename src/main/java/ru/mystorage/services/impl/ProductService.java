@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import ru.mystorage.entities.Product;
+import ru.mystorage.entities.Storage;
 import ru.mystorage.exceptions.MyStorageException;
 import ru.mystorage.models.ResponseModel;
 import ru.mystorage.repositories.ProductRepository;
@@ -49,6 +50,46 @@ public class ProductService implements IProductService {
             log.error(e.getMessage());
             throw new MyStorageException("Внутренняя ошибка сервиса", 500);
         }
+    }
+
+    @Override
+    public Product getByName(String productName) {
+        try {
+            var existProduct = productRepository.findByName(productName);
+            if (existProduct.isPresent()) {
+                return existProduct.get();
+            } else {
+                throw new MyStorageException("Такого товара не существует", 404);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new MyStorageException("Внутренняя ошибка сервиса", 500);
+        }
+    }
+
+    @Override
+    public List<Product> getAllByStorage(Storage storage) {
+        return productRepository.findAllByStorage(storage);
+    }
+
+    @Override
+    public Product getByStorage(Storage storage) {
+        try {
+            var existProduct = productRepository.findByStorage(storage);
+            if (existProduct.isPresent()) {
+                return existProduct.get();
+            } else {
+                throw new MyStorageException("Товара на данном не существует", 404);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new MyStorageException("Внутренняя ошибка сервиса", 500);
+        }
+    }
+
+    @Override
+    public void save(Product product) {
+        productRepository.save(product);
     }
 
     @Override

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.mystorage.controllers.api.ProductControllerApi;
 import ru.mystorage.entities.Product;
 import ru.mystorage.models.ResponseModel;
-import ru.mystorage.services.impl.ProductService;
+import ru.mystorage.services.IProductService;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController implements ProductControllerApi {
 
-    private final ProductService productService;
+    private final IProductService productService;
 
     @Override
     public ResponseModel add(Product product) {
