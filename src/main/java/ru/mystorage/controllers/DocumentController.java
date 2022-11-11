@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mystorage.controllers.api.DocumentControllerApi;
+import ru.mystorage.models.MovingBetweenStoragesModel;
 import ru.mystorage.models.ReceiptOrSaleModel;
 import ru.mystorage.services.IDocumentService;
 
@@ -21,6 +22,11 @@ public class DocumentController implements DocumentControllerApi {
 
     @Override
     public ReceiptOrSaleModel addNewSale(ReceiptOrSaleModel receiptOrSaleModel) {
-        return null;
+        return documentService.addNewSale(receiptOrSaleModel);
+    }
+
+    @Override
+    public MovingBetweenStoragesModel addNewMoving(MovingBetweenStoragesModel movingBetweenStoragesModel) {
+        return documentService.addNewMoving(movingBetweenStoragesModel);
     }
 }

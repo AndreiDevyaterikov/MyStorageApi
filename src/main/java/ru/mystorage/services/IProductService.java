@@ -9,10 +9,10 @@ import java.util.List;
 public interface IProductService {
     ResponseModel add(Product product);
     Product get(Integer id);
-    Product getByName(String productName);
     List<Product> getAllByStorage(Storage storage);
     Product getByStorage(Storage storage);
     void save(Product product);
+    void saveAll(List<Product> products);
     List<Product> getAll();
     ResponseModel delete(Integer id);
     Product edit(Product product);

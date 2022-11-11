@@ -24,46 +24,21 @@ public class ProductService implements IProductService {
 
     @Override
     public ResponseModel add(Product product) {
-        try {
-            var existProduct = productRepository.findById(product.getId());
-            if (existProduct.isPresent()) {
-                throw new MyStorageException("Такой товар уже существует", 405);
-            }
-            productRepository.save(product);
-            return new ResponseModel(200, "Склад успешно добавлен");
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new MyStorageException("Внутренняя ошибка сервиса", 500);
+        var existProduct = productRepository.findById(product.getId());
+        if (existProduct.isPresent()) {
+            throw new MyStorageException("Такой товар уже существует", 405);
         }
+        productRepository.save(product);
+        return new ResponseModel(200, "Склад успешно добавлен");
     }
 
     @Override
     public Product get(Integer id) {
-        try {
-            var existProduct = productRepository.findById(id);
-            if (existProduct.isPresent()) {
-                return existProduct.get();
-            } else {
-                throw new MyStorageException("Такого товара не существует", 404);
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new MyStorageException("Внутренняя ошибка сервиса", 500);
-        }
-    }
-
-    @Override
-    public Product getByName(String productName) {
-        try {
-            var existProduct = productRepository.findByName(productName);
-            if (existProduct.isPresent()) {
-                return existProduct.get();
-            } else {
-                throw new MyStorageException("Такого товара не существует", 404);
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new MyStorageException("Внутренняя ошибка сервиса", 500);
+        var existProduct = productRepository.findById(id);
+        if (existProduct.isPresent()) {
+            return existProduct.get();
+        } else {
+            throw new MyStorageException("Такого товара не существует", 404);
         }
     }
 
@@ -74,16 +49,11 @@ public class ProductService implements IProductService {
 
     @Override
     public Product getByStorage(Storage storage) {
-        try {
-            var existProduct = productRepository.findByStorage(storage);
-            if (existProduct.isPresent()) {
-                return existProduct.get();
-            } else {
-                throw new MyStorageException("Товара на данном не существует", 404);
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new MyStorageException("Внутренняя ошибка сервиса", 500);
+        var existProduct = productRepository.findByStorage(storage);
+        if (existProduct.isPresent()) {
+            return existProduct.get();
+        } else {
+            throw new MyStorageException("Товара на данном не существует", 404);
         }
     }
 
@@ -93,17 +63,17 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public void saveAll(List<Product> products) {
+        productRepository.saveAll(products);
+    }
+
+    @Override
     public List<Product> getAll() {
-        try {
-            var products = productRepository.findAll();
-            if (CollectionUtils.isEmpty(products)) {
-                throw new MyStorageException("Товары не найдены", 404);
-            } else {
-                return products;
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new MyStorageException("Внутренняя ошибка сераиса", 500);
+        var products = productRepository.findAll();
+        if (CollectionUtils.isEmpty(products)) {
+            throw new MyStorageException("Товары не найдены", 404);
+        } else {
+            return products;
         }
     }
 

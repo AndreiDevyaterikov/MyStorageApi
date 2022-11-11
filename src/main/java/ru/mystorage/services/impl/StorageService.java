@@ -20,61 +20,41 @@ public class StorageService implements IStorageService {
 
     @Override
     public ResponseModel add(Storage storage) {
-        try {
-            var existStorage = storageRepository.findById(storage.getId());
-            if (existStorage.isPresent()) {
-                throw new MyStorageException("Такой склад уже существует", 405);
-            }
-            storageRepository.save(storage);
-            return new ResponseModel(200, "Склад успешно добавлен");
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new MyStorageException("Внутренняя ошибка сервиса", 500);
+        var existStorage = storageRepository.findById(storage.getId());
+        if (existStorage.isPresent()) {
+            throw new MyStorageException("Такой склад уже существует", 405);
         }
+        storageRepository.save(storage);
+        return new ResponseModel(200, "Склад успешно добавлен");
     }
 
     @Override
     public Storage get(Integer id) {
-        try {
-            var existStorage = storageRepository.findById(id);
-            if (existStorage.isPresent()) {
-                return existStorage.get();
-            } else {
-                throw new MyStorageException("Такого склада не существует", 404);
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new MyStorageException("Внутренняя ошибка сервиса", 500);
+        var existStorage = storageRepository.findById(id);
+        if (existStorage.isPresent()) {
+            return existStorage.get();
+        } else {
+            throw new MyStorageException("Такого склада не существует", 404);
         }
     }
 
     @Override
     public Storage getByName(String storageName) {
-        try {
-            var existStorage = storageRepository.findByName(storageName);
-            if(existStorage.isPresent()) {
-                return existStorage.get();
-            } else {
-                throw new MyStorageException("Такого склада не существует", 404);
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new MyStorageException("Внутренняя ошибка сераиса", 500);
+        var existStorage = storageRepository.findByName(storageName);
+        if(existStorage.isPresent()) {
+            return existStorage.get();
+        } else {
+            throw new MyStorageException("Такого склада не существует", 404);
         }
     }
 
     @Override
     public List<Storage> getAll() {
-        try {
-            var storages = storageRepository.findAll();
-            if (CollectionUtils.isEmpty(storages)) {
-                throw new MyStorageException("Склады не найдены", 404);
-            } else {
-                return storages;
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new MyStorageException("Внутренняя ошибка сераиса", 500);
+        var storages = storageRepository.findAll();
+        if (CollectionUtils.isEmpty(storages)) {
+            throw new MyStorageException("Склады не найдены", 404);
+        } else {
+            return storages;
         }
     }
 

@@ -1,12 +1,17 @@
 package ru.mystorage.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.mystorage.entities.Product;
 import ru.mystorage.exceptions.MyStorageException;
+import ru.mystorage.models.MovingBetweenStoragesModel;
 import ru.mystorage.models.ReceiptOrSaleModel;
 import ru.mystorage.services.IDocumentService;
 
+import java.util.Objects;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DocumentService implements IDocumentService {
@@ -21,7 +26,7 @@ public class DocumentService implements IDocumentService {
         var productsOnStorage = productService.getAllByStorage(existStorage);
         var products = receiptOrSaleModel.getProducts();
 
-        if (products.isEmpty()) {
+        if (Objects.isNull(products)) {
             throw new MyStorageException("Вы не указали товары для поступления", 400);
         }
 
@@ -49,13 +54,12 @@ public class DocumentService implements IDocumentService {
 
     @Override
     public ReceiptOrSaleModel addNewSale(ReceiptOrSaleModel receiptOrSaleModel) {
-
         var existStorage = storageService.getByName(receiptOrSaleModel.getStorageName());
 
         var productsOnStorage = productService.getAllByStorage(existStorage);
 
         if (productsOnStorage.isEmpty()) {
-            String message = String.format("На указаном складе: %s отсутствуют товары", existStorage.getName());
+            String message = String.format("На указаном складе: %s, отсутствуют товары", existStorage.getName());
             throw new MyStorageException(message, 404);
         } else {
 
@@ -85,5 +89,21 @@ public class DocumentService implements IDocumentService {
             }
             return receiptOrSaleModel;
         }
+    }
+
+    @Override
+    public MovingBetweenStoragesModel addNewMoving(MovingBetweenStoragesModel movingBetweenStoragesModel) {
+        var previousStorage = storageService.getByName(movingBetweenStoragesModel.getFromStorageName());
+        var nextStorage = storageService.getByName(movingBetweenStoragesModel.getToStorageName());
+        var productsOnStorage = productService.getAllByStorage(previousStorage);
+
+        if (productsOnStorage.isEmpty()) {
+            String message = String.format("На указаном складе: %s, отсутствуют товары", previousStorage.getName());
+            throw new MyStorageException(message, 404);
+        } else {
+            productsOnStorage.forEach(productOnStorage -> productOnStorage.setStorage(nextStorage));
+            productService.saveAll(productsOnStorage);
+        }
+        return movingBetweenStoragesModel;
     }
 }
