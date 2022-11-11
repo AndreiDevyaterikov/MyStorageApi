@@ -11,14 +11,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import ru.mystorage.models.ResponseModel;
+import ru.mystorage.entities.Product;
 import ru.mystorage.entities.Storage;
+import ru.mystorage.models.ResponseModel;
 
 import java.util.List;
 
-public interface StorageControllerApi {
+public interface ProductControllerApi {
+
     @PostMapping
-    @Operation(summary = "Добавить новый склад")
+    @Operation(summary = "Добавить новый новар")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -27,7 +29,7 @@ public interface StorageControllerApi {
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = ResponseModel.class)))
                     },
-                    description = "Склад успешно добавлен"
+                    description = "Товар успешно добавлен"
             ),
             @ApiResponse(
                     responseCode = "405",
@@ -36,7 +38,7 @@ public interface StorageControllerApi {
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = ResponseModel.class)))
                     },
-                    description = "Такой склад уже существует"
+                    description = "Такой товар уже существует"
             ),
             @ApiResponse(
                     responseCode = "500",
@@ -48,19 +50,19 @@ public interface StorageControllerApi {
                     description = "Внутренняя ошибка сервиса"
             )
     })
-    ResponseModel add(Storage storage);
+    ResponseModel add(Product product);
 
     @GetMapping("/{id}")
-    @Operation(summary = "Получить информацию о складе по id")
+    @Operation(summary = "Получить информацию о товаре по id")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
                     content = {
                             @Content(
                                     mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = Storage.class)))
+                                    array = @ArraySchema(schema = @Schema(implementation = Product.class)))
                     },
-                    description = "Информация о складе"
+                    description = "Информация о товаре"
             ),
             @ApiResponse(
                     responseCode = "404",
@@ -69,7 +71,7 @@ public interface StorageControllerApi {
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = ResponseModel.class)))
                     },
-                    description = "Такого склада не существует"
+                    description = "Такого товара не существует"
             ),
             @ApiResponse(
                     responseCode = "500",
@@ -81,19 +83,19 @@ public interface StorageControllerApi {
                     description = "Внутренняя ошибка сервиса"
             )
     })
-    Storage get(@PathVariable Integer id);
+    Product get(@PathVariable Integer id);
 
     @GetMapping("/all")
-    @Operation(summary = "Получить информацию о всех складах")
+    @Operation(summary = "Получить информацию о всех товарах")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
                     content = {
                             @Content(
                                     mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = Storage.class)))
+                                    array = @ArraySchema(schema = @Schema(implementation = Product.class)))
                     },
-                    description = "Информация о всех складах"
+                    description = "Информация о всех товарах"
             ),
             @ApiResponse(
                     responseCode = "404",
@@ -102,7 +104,7 @@ public interface StorageControllerApi {
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = ResponseModel.class)))
                     },
-                    description = "Склады не найдены"
+                    description = "Товары не найдены"
             ),
             @ApiResponse(
                     responseCode = "500",
@@ -114,10 +116,10 @@ public interface StorageControllerApi {
                     description = "Внутренняя ошибка сервиса"
             )
     })
-    List<Storage> getAll();
+    List<Product> getAll();
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Удалить информацию о складе")
+    @Operation(summary = "Удалить информацию о товаре")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -126,7 +128,7 @@ public interface StorageControllerApi {
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = ResponseModel.class)))
                     },
-                    description = "Информация о складе удалена"
+                    description = "Информация о товаре удалена"
             ),
             @ApiResponse(
                     responseCode = "404",
@@ -135,7 +137,7 @@ public interface StorageControllerApi {
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = ResponseModel.class)))
                     },
-                    description = "Такого склада не существует"
+                    description = "Такого товара не существует"
             ),
             @ApiResponse(
                     responseCode = "500",
@@ -150,7 +152,7 @@ public interface StorageControllerApi {
     ResponseModel delete(@PathVariable Integer id);
 
     @PutMapping
-    @Operation(summary = "Изменить информацию о складе")
+    @Operation(summary = "Изменить информацию о товаре")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -159,7 +161,7 @@ public interface StorageControllerApi {
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = Storage.class)))
                     },
-                    description = "Информация о складе успешно изменена"
+                    description = "Информация о товаре успешно изменена"
             ),
             @ApiResponse(
                     responseCode = "404",
@@ -168,7 +170,7 @@ public interface StorageControllerApi {
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = ResponseModel.class)))
                     },
-                    description = "Такого склада не существует"
+                    description = "Такого товара не существует"
             ),
             @ApiResponse(
                     responseCode = "500",
@@ -180,5 +182,5 @@ public interface StorageControllerApi {
                     description = "Внутренняя ошибка сервиса"
             )
     })
-    Storage edit(Storage storage);
+    Product edit(Product product);
 }

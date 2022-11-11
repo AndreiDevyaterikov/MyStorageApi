@@ -1,4 +1,4 @@
-package ru.mystorage.services;
+package ru.mystorage.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -6,17 +6,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import ru.mystorage.exceptions.MyStorageException;
 import ru.mystorage.models.ResponseModel;
-import ru.mystorage.models.Storage;
+import ru.mystorage.entities.Storage;
 import ru.mystorage.repositories.StorageRepository;
+import ru.mystorage.services.IStorageService;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class StorageService {
+public class StorageService implements IStorageService {
     private final StorageRepository storageRepository;
 
+    @Override
     public ResponseModel add(Storage storage) {
         try {
             var existStorage = storageRepository.findById(storage.getId());
@@ -31,6 +33,7 @@ public class StorageService {
         }
     }
 
+    @Override
     public Storage get(Integer id) {
         try {
             var existStorage = storageRepository.findById(id);
@@ -45,6 +48,7 @@ public class StorageService {
         }
     }
 
+    @Override
     public List<Storage> getAll() {
         try {
             var storages = storageRepository.findAll();
@@ -59,12 +63,14 @@ public class StorageService {
         }
     }
 
+    @Override
     public ResponseModel delete(Integer id) {
         var storage = get(id);
         storageRepository.delete(storage);
         return new ResponseModel(200, "Информация о складе успешно удалена");
     }
 
+    @Override
     public Storage edit(Storage storage) {
         var existStorage = get(storage.getId());
         existStorage.setName(storage.getName());

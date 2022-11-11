@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mystorage.controllers.api.StorageControllerApi;
 import ru.mystorage.models.ResponseModel;
-import ru.mystorage.models.Storage;
-import ru.mystorage.services.StorageService;
+import ru.mystorage.entities.Storage;
+import ru.mystorage.services.impl.StorageService;
 
 import java.util.List;
 

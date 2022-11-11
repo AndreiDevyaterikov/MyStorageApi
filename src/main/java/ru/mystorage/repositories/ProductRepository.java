@@ -2,10 +2,9 @@ package ru.mystorage.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.mystorage.entities.Storage;
-
+import ru.mystorage.entities.Product;
 
 @Repository
-public interface StorageRepository extends JpaRepository<Storage, Integer> {
+public interface ProductRepository extends JpaRepository<Product, Integer> {
 
 }
