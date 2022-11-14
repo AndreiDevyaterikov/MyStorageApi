@@ -89,8 +89,11 @@ public class DocumentService implements IDocumentService {
                     var productOnStorage = productOnStorageOpt.get();
                     var sellAmount = product.getAmount();
                     if (sellAmount > productOnStorage.getAmount()) {
-                        String message = String.format("Нельзя продать товара больше чем есть на складе. Кол-во на " +
-                                "складе: %s, кол-во на продажу: %s", productOnStorage.getAmount(), product.getAmount());
+                        String message = String.format("Нельзя продать товара %s больше чем есть на складе. Кол-во на" +
+                                " " +
+                                "складе: %s, кол-во на продажу: %s",productOnStorage.getName(),
+                                productOnStorage.getAmount(),
+                                product.getAmount());
                         throw new MyStorageException(message, 405);
                     }
                     if (sellAmount.equals(productOnStorage.getAmount())) {
