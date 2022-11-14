@@ -63,6 +63,11 @@ public class ProductService implements IProductService {
         return productRepository.findByNameAndArticle(name, article);
     }
 
+    @Override
+    public Optional<Product> getByNameAndArticleAndStorage(String name, String article, Storage storage) {
+        return productRepository.findByNameAndArticleAndStorage(name, article, storage);
+    }
+
 
     @Override
     public List<Product> getAllByStorage(Storage storage) {

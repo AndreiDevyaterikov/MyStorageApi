@@ -6,14 +6,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import ru.mystorage.models.ResponseModel;
+import org.springframework.web.bind.annotation.*;
 import ru.mystorage.entities.Storage;
+import ru.mystorage.models.ResponseModel;
 import ru.mystorage.models.StorageModel;
 
 import java.util.List;
@@ -39,15 +34,6 @@ public interface StorageControllerApi {
                                     array = @ArraySchema(schema = @Schema(implementation = ResponseModel.class)))
                     },
                     description = "Такой склад уже существует"
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    content = {
-                            @Content(
-                                    mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = ResponseModel.class)))
-                    },
-                    description = "Внутренняя ошибка сервиса"
             )
     })
     Storage add(@RequestBody StorageModel storageModel);
@@ -72,15 +58,6 @@ public interface StorageControllerApi {
                                     array = @ArraySchema(schema = @Schema(implementation = ResponseModel.class)))
                     },
                     description = "Такого склада не существует"
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    content = {
-                            @Content(
-                                    mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = ResponseModel.class)))
-                    },
-                    description = "Внутренняя ошибка сервиса"
             )
     })
     Storage get(@PathVariable Integer id);
@@ -105,15 +82,6 @@ public interface StorageControllerApi {
                                     array = @ArraySchema(schema = @Schema(implementation = ResponseModel.class)))
                     },
                     description = "Склады не найдены"
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    content = {
-                            @Content(
-                                    mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = ResponseModel.class)))
-                    },
-                    description = "Внутренняя ошибка сервиса"
             )
     })
     List<Storage> getAll();
@@ -138,15 +106,6 @@ public interface StorageControllerApi {
                                     array = @ArraySchema(schema = @Schema(implementation = ResponseModel.class)))
                     },
                     description = "Такого склада не существует"
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    content = {
-                            @Content(
-                                    mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = ResponseModel.class)))
-                    },
-                    description = "Внутренняя ошибка сервиса"
             )
     })
     ResponseModel delete(@PathVariable Integer id);
@@ -171,15 +130,6 @@ public interface StorageControllerApi {
                                     array = @ArraySchema(schema = @Schema(implementation = ResponseModel.class)))
                     },
                     description = "Такого склада не существует"
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    content = {
-                            @Content(
-                                    mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = ResponseModel.class)))
-                    },
-                    description = "Внутренняя ошибка сервиса"
             )
     })
     Storage edit(Storage storage);

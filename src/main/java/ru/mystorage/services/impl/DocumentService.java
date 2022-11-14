@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import ru.mystorage.entities.Product;
 import ru.mystorage.exceptions.MyStorageException;
 import ru.mystorage.models.MovingBetweenStoragesModel;
-import ru.mystorage.models.ProductModelWithStorage;
 import ru.mystorage.models.ReceiptOrSaleModel;
 import ru.mystorage.services.IDocumentService;
 
@@ -109,7 +108,7 @@ public class DocumentService implements IDocumentService {
 
     @Override
     public MovingBetweenStoragesModel addNewMoving(MovingBetweenStoragesModel movingBetweenStoragesModel) {
-
+        var previousStorage = storageService.getByName(movingBetweenStoragesModel.getFromStorageName());
         var nextStorage = storageService.getByName(movingBetweenStoragesModel.getToStorageName());
         var productsOnNextStorage = productService.getAllByStorage(nextStorage);
         var movingProducts = movingBetweenStoragesModel.getProducts();
@@ -138,33 +137,21 @@ public class DocumentService implements IDocumentService {
                 }
             });
         } else {
-            productsOnNextStorage.forEach(existProductOnNextStorage -> {
-                movingProducts.forEach(movingProduct -> {
-                    var productOnPreviousStorageOpt = productService.getByNameAndArticle(movingProduct.getName(),
-                            movingProduct.getArticle());
-                    if (productOnPreviousStorageOpt.isPresent()) {
-                        var productOnPreviousStorage = productOnPreviousStorageOpt.get();
-                        if (existProductOnNextStorage.getName().equals(productOnPreviousStorage.getName())
-                                && existProductOnNextStorage.getArticle().equals(productOnPreviousStorage.getArticle())) {
-                            existProductOnNextStorage.setAmount(existProductOnNextStorage.getAmount() + productOnPreviousStorage.getAmount());
-                            productService.save(existProductOnNextStorage);
-                        } else {
-                            productService.save(Product.builder()
-                                    .name(productOnPreviousStorage.getName())
-                                    .article(productOnPreviousStorage.getArticle())
-                                    .amount(movingProduct.getAmount())
-                                    .lastBuyPrice(productOnPreviousStorage.getLastBuyPrice())
-                                    .lastSellPrice(productOnPreviousStorage.getLastSellPrice())
-                                    .storage(nextStorage)
-                                    .build());
-                        }
-
+            movingProducts.forEach(movingProduct -> productsOnNextStorage.forEach(existProductOnNextStorage -> {
+                var productOnPreviousStorageOpt = productService.getByNameAndArticleAndStorage(movingProduct.getName(),
+                        movingProduct.getArticle(), previousStorage);
+                if (productOnPreviousStorageOpt.isPresent()) {
+                    var productOnPreviousStorage = productOnPreviousStorageOpt.get();
+                    if (existProductOnNextStorage.getName().equals(productOnPreviousStorage.getName())
+                            && existProductOnNextStorage.getArticle().equals(productOnPreviousStorage.getArticle())) {
+                        existProductOnNextStorage.setAmount(existProductOnNextStorage.getAmount() + productOnPreviousStorage.getAmount());
+                        productService.save(existProductOnNextStorage);
                     } else {
-                        throw new MyStorageException(String.format("Не найдено товара %s для перемещения на склад %s",
-                                movingProduct.getName(), nextStorage.getName()), 404);
+                        productOnPreviousStorage.setStorage(nextStorage);
+                        productService.save(productOnPreviousStorage);
                     }
-                });
-            });
+                }
+            }));
         }
         return movingBetweenStoragesModel;
     }

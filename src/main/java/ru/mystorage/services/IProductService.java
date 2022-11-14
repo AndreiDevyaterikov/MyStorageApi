@@ -15,6 +15,8 @@ public interface IProductService {
 
     Optional<Product> getByNameAndArticle(String name, String article);
 
+    Optional<Product> getByNameAndArticleAndStorage(String name, String article, Storage storage);
+
     List<Product> getAllByStorage(Storage storage);
 
     Product getByStorage(Storage storage);
