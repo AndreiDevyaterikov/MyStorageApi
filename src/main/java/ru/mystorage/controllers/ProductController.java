@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mystorage.controllers.api.ProductControllerApi;
 import ru.mystorage.entities.Product;
-import ru.mystorage.models.ProductModel;
+import ru.mystorage.models.ProductModelWithStorage;
 import ru.mystorage.models.ResponseModel;
 import ru.mystorage.services.IProductService;
 
@@ -19,7 +19,7 @@ public class ProductController implements ProductControllerApi {
     private final IProductService productService;
 
     @Override
-    public Product add(ProductModel productModel) {
+    public Product add(ProductModelWithStorage productModel) {
         return productService.add(productModel);
     }
 

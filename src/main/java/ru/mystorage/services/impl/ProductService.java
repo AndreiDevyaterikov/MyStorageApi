@@ -7,7 +7,7 @@ import org.springframework.util.CollectionUtils;
 import ru.mystorage.entities.Product;
 import ru.mystorage.entities.Storage;
 import ru.mystorage.exceptions.MyStorageException;
-import ru.mystorage.models.ProductModel;
+import ru.mystorage.models.ProductModelWithStorage;
 import ru.mystorage.models.ResponseModel;
 import ru.mystorage.repositories.ProductRepository;
 import ru.mystorage.services.IProductService;
@@ -24,7 +24,7 @@ public class ProductService implements IProductService {
 
 
     @Override
-    public Product add(ProductModel productModel) {
+    public Product add(ProductModelWithStorage productModel) {
         var existStorage = storageService.getByName(productModel.getStorageName());
         var existProductOpt = productRepository.findByNameAndArticle(productModel.getName(), productModel.getArticle());
         if (existProductOpt.isPresent()) {

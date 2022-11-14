@@ -18,7 +18,7 @@ public class DocumentService implements IDocumentService {
 
     @Override
     public ReceiptOrSaleModel addNewReceipt(ReceiptOrSaleModel receiptOrSaleModel) {
-
+//
 //        var existStorage = storageService.getByName(receiptOrSaleModel.getStorageName());
 //        var productsOnStorage = productService.getAllByStorage(existStorage);
 //        var products = receiptOrSaleModel.getProducts();
@@ -52,41 +52,42 @@ public class DocumentService implements IDocumentService {
 
     @Override
     public ReceiptOrSaleModel addNewSale(ReceiptOrSaleModel receiptOrSaleModel) {
-        var existStorage = storageService.getByName(receiptOrSaleModel.getStorageName());
-
-        var productsOnStorage = productService.getAllByStorage(existStorage);
-
-        if (productsOnStorage.isEmpty()) {
-            String message = String.format("На указаном складе: %s, отсутствуют товары", existStorage.getName());
-            throw new MyStorageException(message, 404);
-        } else {
-
-            var products = receiptOrSaleModel.getProducts();
-
-            if (products.isEmpty()) {
-                throw new MyStorageException("Вы не указали товары для продажи", 400);
-            }
-
-            for (var product : products) {
-                var productOnStorage = productService.getByStorage(existStorage);
-                var sellAmount = product.getAmount();
-                if (sellAmount > productOnStorage.getAmount()) {
-                    String message = String.format("Нельзя продать товара больше чем есть на складе. Кол-во на " +
-                            "складе: " +
-                            "%s, кол-во на продажу: %s", productOnStorage.getAmount(), product.getAmount());
-                    throw new MyStorageException(message, 405);
-                }
-                if (sellAmount.equals(productOnStorage.getAmount())) {
-                    productOnStorage.setAmount(0);
-                } else {
-                    productOnStorage.setAmount(productOnStorage.getAmount() - product.getAmount());
-                }
-                productOnStorage.setLastSellPrice(product.getPrice());
-                productService.save(productOnStorage);
-
-            }
-            return receiptOrSaleModel;
-        }
+//        var existStorage = storageService.getByName(receiptOrSaleModel.getStorageName());
+//
+//        var productsOnStorage = productService.getAllByStorage(existStorage);
+//
+//        if (productsOnStorage.isEmpty()) {
+//            String message = String.format("На указаном складе: %s, отсутствуют товары", existStorage.getName());
+//            throw new MyStorageException(message, 404);
+//        } else {
+//
+//            var products = receiptOrSaleModel.getProducts();
+//
+//            if (products.isEmpty()) {
+//                throw new MyStorageException("Вы не указали товары для продажи", 400);
+//            }
+//
+//            for (var product : products) {
+//                var productOnStorage = productService.getByStorage(existStorage);
+//                var sellAmount = product.getAmount();
+//                if (sellAmount > productOnStorage.getAmount()) {
+//                    String message = String.format("Нельзя продать товара больше чем есть на складе. Кол-во на " +
+//                            "складе: " +
+//                            "%s, кол-во на продажу: %s", productOnStorage.getAmount(), product.getAmount());
+//                    throw new MyStorageException(message, 405);
+//                }
+//                if (sellAmount.equals(productOnStorage.getAmount())) {
+//                    productOnStorage.setAmount(0);
+//                } else {
+//                    productOnStorage.setAmount(productOnStorage.getAmount() - product.getAmount());
+//                }
+//                productOnStorage.setLastSellPrice(product.getPrice());
+//                productService.save(productOnStorage);
+//
+//            }
+//            return receiptOrSaleModel;
+//        }
+        return null;
     }
 
     @Override

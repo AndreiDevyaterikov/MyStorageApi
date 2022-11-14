@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import ru.mystorage.entities.Product;
 import ru.mystorage.entities.Storage;
-import ru.mystorage.models.ProductModel;
+import ru.mystorage.models.ProductModelWithStorage;
 import ru.mystorage.models.ResponseModel;
 
 import java.util.List;
@@ -51,7 +51,7 @@ public interface ProductControllerApi {
                     description = "Внутренняя ошибка сервиса"
             )
     })
-    Product add(ProductModel productModel);
+    Product add(ProductModelWithStorage productModel);
 
     @GetMapping("/{id}")
     @Operation(summary = "Получить информацию о товаре по id")
