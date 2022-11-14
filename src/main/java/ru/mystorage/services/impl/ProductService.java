@@ -7,6 +7,7 @@ import org.springframework.util.CollectionUtils;
 import ru.mystorage.entities.Product;
 import ru.mystorage.entities.Storage;
 import ru.mystorage.exceptions.MyStorageException;
+import ru.mystorage.models.ProductModel;
 import ru.mystorage.models.ResponseModel;
 import ru.mystorage.repositories.ProductRepository;
 import ru.mystorage.services.IProductService;
@@ -23,13 +24,27 @@ public class ProductService implements IProductService {
 
 
     @Override
-    public ResponseModel add(Product product) {
-        var existProduct = productRepository.findById(product.getId());
-        if (existProduct.isPresent()) {
-            throw new MyStorageException("Такой товар уже существует", 405);
+    public Product add(ProductModel productModel) {
+        var existStorage = storageService.getByName(productModel.getStorageName());
+        var existProductOpt = productRepository.findByNameAndArticle(productModel.getName(), productModel.getArticle());
+        if (existProductOpt.isPresent()) {
+            var existProduct = existProductOpt.get();
+            existProduct.setStorage(existStorage);
+            existProduct.setAmount(existProduct.getAmount() + productModel.getAmount());
+            existProduct.setLastBuyPrice(productModel.getPrice());
+            productRepository.save(existProduct);
+            return existProduct;
+        } else {
+            var newProduct = Product.builder()
+                    .name(productModel.getName())
+                    .article(productModel.getArticle())
+                    .amount(productModel.getAmount())
+                    .lastBuyPrice(productModel.getPrice())
+                    .storage(existStorage)
+                    .build();
+            productRepository.save(newProduct);
+            return newProduct;
         }
-        productRepository.save(product);
-        return new ResponseModel(200, "Склад успешно добавлен");
     }
 
     @Override

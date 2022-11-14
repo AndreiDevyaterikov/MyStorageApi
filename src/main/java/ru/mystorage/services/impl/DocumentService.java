@@ -3,13 +3,10 @@ package ru.mystorage.services.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.mystorage.entities.Product;
 import ru.mystorage.exceptions.MyStorageException;
 import ru.mystorage.models.MovingBetweenStoragesModel;
 import ru.mystorage.models.ReceiptOrSaleModel;
 import ru.mystorage.services.IDocumentService;
-
-import java.util.Objects;
 
 @Slf4j
 @Service
@@ -22,34 +19,35 @@ public class DocumentService implements IDocumentService {
     @Override
     public ReceiptOrSaleModel addNewReceipt(ReceiptOrSaleModel receiptOrSaleModel) {
 
-        var existStorage = storageService.getByName(receiptOrSaleModel.getStorageName());
-        var productsOnStorage = productService.getAllByStorage(existStorage);
-        var products = receiptOrSaleModel.getProducts();
-
-        if (Objects.isNull(products)) {
-            throw new MyStorageException("Вы не указали товары для поступления", 400);
-        }
-
-        if(productsOnStorage.isEmpty()) {
-            products.forEach(product -> productService.add(
-                    Product.builder()
-                            .article(product.getArticle())
-                            .name(product.getName())
-                            .amount(product.getAmount())
-                            .lastBuyPrice(product.getPrice())
-                            .storage(existStorage)
-                            .build()
-            ));
-
-        } else {
-            products.forEach(product -> {
-                var productOnStorage = productService.getByStorage(existStorage);
-                productOnStorage.setAmount(productOnStorage.getAmount() + product.getAmount());
-                productOnStorage.setLastBuyPrice(product.getPrice());
-                productService.save(productOnStorage);
-            });
-        }
-        return receiptOrSaleModel;
+//        var existStorage = storageService.getByName(receiptOrSaleModel.getStorageName());
+//        var productsOnStorage = productService.getAllByStorage(existStorage);
+//        var products = receiptOrSaleModel.getProducts();
+//
+//        if (Objects.isNull(products)) {
+//            throw new MyStorageException("Вы не указали товары для поступления", 400);
+//        }
+//
+//        if(productsOnStorage.isEmpty()) {
+//            products.forEach(product -> productService.add(
+//                    Product.builder()
+//                            .article(product.getArticle())
+//                            .name(product.getName())
+//                            .amount(product.getAmount())
+//                            .lastBuyPrice(product.getPrice())
+//                            .storage(existStorage)
+//                            .build()
+//            ));
+//
+//        } else {
+//            products.forEach(product -> {
+//                var productOnStorage = productService.getByStorage(existStorage);
+//                productOnStorage.setAmount(productOnStorage.getAmount() + product.getAmount());
+//                productOnStorage.setLastBuyPrice(product.getPrice());
+//                productService.save(productOnStorage);
+//            });
+//        }
+//        return receiptOrSaleModel;
+        return null;
     }
 
     @Override

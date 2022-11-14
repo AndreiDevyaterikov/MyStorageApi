@@ -2,12 +2,13 @@ package ru.mystorage.services;
 
 import ru.mystorage.entities.Product;
 import ru.mystorage.entities.Storage;
+import ru.mystorage.models.ProductModel;
 import ru.mystorage.models.ResponseModel;
 
 import java.util.List;
 
 public interface IProductService {
-    ResponseModel add(Product product);
+    Product add(ProductModel productModel);
     Product get(Integer id);
     List<Product> getAllByStorage(Storage storage);
     Product getByStorage(Storage storage);

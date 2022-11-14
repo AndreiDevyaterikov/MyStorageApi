@@ -10,4 +10,5 @@ public class ProductModel {
     private String article;
     private Integer amount;
     private BigDecimal price;
+    private String storageName;
 }
