@@ -148,7 +148,11 @@ public class DocumentService implements IDocumentService {
         } else {
             productsOnNextStorage.forEach(existProductOnNextStorage -> {
                 movingProducts.forEach(movingProduct -> {
-                    //если найден среди товаров на новом складе
+                    //если перемещаемый товар найден среди товаров на новом складе
+                    if (movingProduct.getName().equals(existProductOnNextStorage.getName())
+                            && movingProduct.getArticle().equals(existProductOnNextStorage.getArticle())) {
+
+                    }
                 });
             });
         }
