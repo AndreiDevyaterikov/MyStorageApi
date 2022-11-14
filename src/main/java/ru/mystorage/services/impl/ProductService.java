@@ -13,6 +13,7 @@ import ru.mystorage.repositories.ProductRepository;
 import ru.mystorage.services.IProductService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -56,6 +57,12 @@ public class ProductService implements IProductService {
             throw new MyStorageException("Такого товара не существует", 404);
         }
     }
+
+    @Override
+    public Optional<Product> getByNameAndArticle(String name, String article) {
+        return productRepository.findByNameAndArticle(name, article);
+    }
+
 
     @Override
     public List<Product> getAllByStorage(Storage storage) {

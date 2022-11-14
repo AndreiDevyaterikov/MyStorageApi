@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import ru.mystorage.models.MovingBetweenStoragesModel;
 import ru.mystorage.models.ReceiptOrSaleModel;
 import ru.mystorage.models.ResponseModel;
@@ -34,7 +35,7 @@ public interface DocumentControllerApi {
                     description = "Внутренняя ошибка сервиса"
             )
     })
-    ReceiptOrSaleModel addNewReceipt(ReceiptOrSaleModel receiptOrSaleModel);
+    ReceiptOrSaleModel addNewReceipt(@RequestBody ReceiptOrSaleModel receiptOrSaleModel);
 
     @PostMapping("/sale")
     @Operation(summary = "Создать новую продажу")
@@ -58,9 +59,9 @@ public interface DocumentControllerApi {
                     description = "Внутренняя ошибка сервиса"
             )
     })
-    ReceiptOrSaleModel addNewSale(ReceiptOrSaleModel receiptOrSaleModel);
+    ReceiptOrSaleModel addNewSale(@RequestBody ReceiptOrSaleModel receiptOrSaleModel);
 
-    @PostMapping("/move")
+    @PostMapping("/moveToStorage")
     @Operation(summary = "Переместить товары с одного склада на другой")
     @ApiResponses(value = {
             @ApiResponse(
@@ -82,5 +83,5 @@ public interface DocumentControllerApi {
                     description = "Внутренняя ошибка сервиса"
             )
     })
-    MovingBetweenStoragesModel addNewMoving(MovingBetweenStoragesModel movingBetweenStoragesModel);
+    MovingBetweenStoragesModel addNewMoving(@RequestBody MovingBetweenStoragesModel movingBetweenStoragesModel);
 }

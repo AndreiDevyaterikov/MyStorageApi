@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import ru.mystorage.models.ResponseModel;
 import ru.mystorage.entities.Storage;
 import ru.mystorage.models.StorageModel;
@@ -49,7 +50,7 @@ public interface StorageControllerApi {
                     description = "Внутренняя ошибка сервиса"
             )
     })
-    Storage add(StorageModel storageModel);
+    Storage add(@RequestBody StorageModel storageModel);
 
     @GetMapping("/{id}")
     @Operation(summary = "Получить информацию о складе по id")

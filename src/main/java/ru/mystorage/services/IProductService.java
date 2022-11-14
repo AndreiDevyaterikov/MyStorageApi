@@ -6,11 +6,14 @@ import ru.mystorage.models.ProductModelWithStorage;
 import ru.mystorage.models.ResponseModel;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IProductService {
     Product add(ProductModelWithStorage productModel);
 
     Product get(Integer id);
+
+    Optional<Product> getByNameAndArticle(String name, String article);
 
     List<Product> getAllByStorage(Storage storage);
 

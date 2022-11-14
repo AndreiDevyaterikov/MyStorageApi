@@ -48,7 +48,8 @@ public class StorageService implements IStorageService {
         if (existStorage.isPresent()) {
             return existStorage.get();
         } else {
-            throw new MyStorageException("Такого склада не существует", 404);
+            log.info(String.format("Такого склада не существует: %s", storageName));
+            throw new MyStorageException(String.format("Такого склада не существует: %s", storageName), 404);
         }
     }
 
