@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.mystorage.controllers.api.StorageControllerApi;
 import ru.mystorage.entities.Storage;
 import ru.mystorage.models.ResponseModel;
+import ru.mystorage.models.StorageModel;
 import ru.mystorage.services.IStorageService;
 
 import java.util.List;
@@ -18,8 +19,8 @@ public class StorageController implements StorageControllerApi {
     private final IStorageService storageService;
 
     @Override
-    public ResponseModel add(Storage storage) {
-        return storageService.add(storage);
+    public Storage add(StorageModel storageModel) {
+        return storageService.add(storageModel);
     }
 
     @Override

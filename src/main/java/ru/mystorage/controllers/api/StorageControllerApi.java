@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import ru.mystorage.models.ResponseModel;
 import ru.mystorage.entities.Storage;
+import ru.mystorage.models.StorageModel;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public interface StorageControllerApi {
                     content = {
                             @Content(
                                     mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = ResponseModel.class)))
+                                    array = @ArraySchema(schema = @Schema(implementation = Storage.class)))
                     },
                     description = "Склад успешно добавлен"
             ),
@@ -48,7 +49,7 @@ public interface StorageControllerApi {
                     description = "Внутренняя ошибка сервиса"
             )
     })
-    ResponseModel add(Storage storage);
+    Storage add(StorageModel storageModel);
 
     @GetMapping("/{id}")
     @Operation(summary = "Получить информацию о складе по id")

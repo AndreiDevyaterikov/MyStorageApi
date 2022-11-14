@@ -7,6 +7,7 @@ import org.springframework.util.CollectionUtils;
 import ru.mystorage.exceptions.MyStorageException;
 import ru.mystorage.models.ResponseModel;
 import ru.mystorage.entities.Storage;
+import ru.mystorage.models.StorageModel;
 import ru.mystorage.repositories.StorageRepository;
 import ru.mystorage.services.IStorageService;
 
@@ -19,13 +20,15 @@ public class StorageService implements IStorageService {
     private final StorageRepository storageRepository;
 
     @Override
-    public ResponseModel add(Storage storage) {
-        var existStorage = storageRepository.findById(storage.getId());
+    public Storage add(StorageModel storageModel) {
+        var existStorage = storageRepository.findByName(storageModel.getStorageName());
         if (existStorage.isPresent()) {
             throw new MyStorageException("Такой склад уже существует", 405);
         }
-        storageRepository.save(storage);
-        return new ResponseModel(200, "Склад успешно добавлен");
+        var storageEntity = new Storage();
+        storageEntity.setName(storageModel.getStorageName());
+        storageRepository.save(storageEntity);
+        return storageEntity;
     }
 
     @Override
@@ -41,7 +44,7 @@ public class StorageService implements IStorageService {
     @Override
     public Storage getByName(String storageName) {
         var existStorage = storageRepository.findByName(storageName);
-        if(existStorage.isPresent()) {
+        if (existStorage.isPresent()) {
             return existStorage.get();
         } else {
             throw new MyStorageException("Такого склада не существует", 404);
