@@ -90,8 +90,8 @@ public class DocumentService implements IDocumentService {
                     var sellAmount = product.getAmount();
                     if (sellAmount > productOnStorage.getAmount()) {
                         String message = String.format("Нельзя продать товара %s больше чем есть на складе. Кол-во на" +
-                                " " +
-                                "складе: %s, кол-во на продажу: %s",productOnStorage.getName(),
+                                        " " +
+                                        "складе: %s, кол-во на продажу: %s", productOnStorage.getName(),
                                 productOnStorage.getAmount(),
                                 product.getAmount());
                         throw new MyStorageException(message, 405);
@@ -116,17 +116,43 @@ public class DocumentService implements IDocumentService {
 
     @Override
     public MovingBetweenStoragesModel addNewMoving(MovingBetweenStoragesModel movingBetweenStoragesModel) {
+
         var previousStorage = storageService.getByName(movingBetweenStoragesModel.getFromStorageName());
         var nextStorage = storageService.getByName(movingBetweenStoragesModel.getToStorageName());
-        var productsOnStorage = productService.getAllByStorage(previousStorage);
+        var productsOnNextStorage = productService.getAllByStorage(nextStorage);
+        var productsOnPreviousStorage = productService.getAllByStorage(previousStorage);
+        var movingProducts = movingBetweenStoragesModel.getProducts();
 
-        if (productsOnStorage.isEmpty()) {
-            String message = String.format("На указаном складе: %s, отсутствуют товары", previousStorage.getName());
-            throw new MyStorageException(message, 404);
+        //если на новом складе нет таких товаров
+        if (productsOnNextStorage.isEmpty()) {
+            movingProducts.forEach(movingProduct -> {
+                var productOnPreviousStorageOpt = productService.getByNameAndArticle(movingProduct.getName(),
+                        movingProduct.getArticle());
+                //если на предыдущем складе есть товар, который мы хотим переместить
+                if (productOnPreviousStorageOpt.isPresent()) {
+                    var productOnPreviousStorage = productOnPreviousStorageOpt.get();
+                    productOnPreviousStorage.setAmount(productOnPreviousStorage.getAmount() - movingProduct.getAmount());
+                    productService.add(new ProductModelWithStorage(
+                            movingProduct.getName(),
+                            movingProduct.getArticle(),
+                            movingProduct.getAmount(),
+                            movingProduct.getPrice(),
+                            nextStorage.getName()
+                    ));
+                    productService.save(productOnPreviousStorage);
+                } else {
+                    throw new MyStorageException(String.format("Не найдено товара %s для перемещения на склад %s",
+                            movingProduct.getName(), nextStorage.getName()), 404);
+                }
+            });
         } else {
-            productsOnStorage.forEach(productOnStorage -> productOnStorage.setStorage(nextStorage));
-            productService.saveAll(productsOnStorage);
+            productsOnNextStorage.forEach(existProductOnNextStorage -> {
+                movingProducts.forEach(movingProduct -> {
+                    //если найден среди товаров на новом складе
+                });
+            });
         }
+
         return movingBetweenStoragesModel;
     }
 }
