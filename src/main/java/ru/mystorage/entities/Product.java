@@ -9,6 +9,7 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -24,7 +25,9 @@ import java.math.BigDecimal;
 @Table(name = "products")
 @NoArgsConstructor
 public class Product {
+
     @Id
+    @GeneratedValue(generator = "product_sequence")
     @Column(name = "product_id")
     private Integer id;
 

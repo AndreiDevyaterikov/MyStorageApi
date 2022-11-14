@@ -25,8 +25,9 @@ public class StorageService implements IStorageService {
         if (existStorage.isPresent()) {
             throw new MyStorageException("Такой склад уже существует", 405);
         }
-        var storageEntity = new Storage();
-        storageEntity.setName(storageModel.getStorageName());
+        var storageEntity = Storage.builder()
+                .name(storageModel.getStorageName())
+                .build();
         storageRepository.save(storageEntity);
         return storageEntity;
     }
