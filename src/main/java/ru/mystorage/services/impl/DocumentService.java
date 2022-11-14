@@ -4,14 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.mystorage.entities.Product;
-import ru.mystorage.entities.Storage;
 import ru.mystorage.exceptions.MyStorageException;
 import ru.mystorage.models.MovingBetweenStoragesModel;
 import ru.mystorage.models.ProductModelWithStorage;
 import ru.mystorage.models.ReceiptOrSaleModel;
 import ru.mystorage.services.IDocumentService;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 @Slf4j
@@ -34,15 +32,13 @@ public class DocumentService implements IDocumentService {
         }
 
         if (productsOnStorage.isEmpty()) {
-            products.forEach(productModel -> productService.add(
-                    new ProductModelWithStorage(
-                            productModel.getName(),
-                            productModel.getArticle(),
-                            productModel.getAmount(),
-                            productModel.getPrice(),
-                            existStorage.getName()
-                    )
-            ));
+            products.forEach(productModel -> productService.save(Product.builder()
+                    .name(productModel.getName())
+                    .article(productModel.getArticle())
+                    .amount(productModel.getAmount())
+                    .lastBuyPrice(productModel.getPrice())
+                    .storage(existStorage)
+                    .build()));
 
         } else {
             products.forEach(product -> {
@@ -53,18 +49,14 @@ public class DocumentService implements IDocumentService {
                     productOnStorage.setLastBuyPrice(product.getPrice());
                     productService.save(productOnStorage);
                 } else {
-                    productService.add(
-                            new ProductModelWithStorage(
-                                    product.getName(),
-                                    product.getArticle(),
-                                    product.getAmount(),
-                                    product.getPrice(),
-                                    existStorage.getName()
-                            )
-                    );
+                    productService.save(Product.builder()
+                            .name(product.getName())
+                            .article(product.getArticle())
+                            .amount(product.getAmount())
+                            .lastBuyPrice(product.getPrice())
+                            .storage(existStorage)
+                            .build());
                 }
-
-
             });
         }
         return receiptOrSaleModel;
@@ -110,8 +102,6 @@ public class DocumentService implements IDocumentService {
                     throw new MyStorageException(String.format("Товар с именем %s и артикулом %s не найден для продажи",
                             product.getName(), product.getArticle()), 404);
                 }
-
-
             }
             return receiptOrSaleModel;
         }
