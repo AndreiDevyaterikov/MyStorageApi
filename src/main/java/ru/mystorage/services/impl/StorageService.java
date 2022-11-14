@@ -71,7 +71,11 @@ public class StorageService implements IStorageService {
     @Override
     public Storage edit(Storage storage) {
         var existStorage = get(storage.getId());
+        if (storage.getName() == null) {
+            throw new MyStorageException("Вы не указали новое имя склада", 405);
+        }
         existStorage.setName(storage.getName());
+        storageRepository.save(existStorage);
         return existStorage;
     }
 }
