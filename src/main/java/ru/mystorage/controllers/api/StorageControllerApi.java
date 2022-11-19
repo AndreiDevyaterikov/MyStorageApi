@@ -14,6 +14,12 @@ import ru.mystorage.models.StorageModel;
 import java.util.List;
 
 public interface StorageControllerApi {
+
+    /** Метод добавления нового склада в систему
+     * @param storageModel {@link StorageModel}
+     * @return {@link Storage}
+     * @see ResponseModel
+     */
     @PostMapping
     @Operation(summary = "Добавить новый склад")
     @ApiResponses(value = {
@@ -38,6 +44,12 @@ public interface StorageControllerApi {
     })
     Storage add(@RequestBody StorageModel storageModel);
 
+
+    /** Метод поиска склада по id склада
+     * @param id  {@link Storage#id}
+     * @return {@link Storage}
+     * @see ResponseModel
+     */
     @GetMapping("/{id}")
     @Operation(summary = "Получить информацию о складе по id")
     @ApiResponses(value = {
@@ -61,6 +73,11 @@ public interface StorageControllerApi {
             )
     })
     Storage get(@PathVariable Integer id);
+
+    /** Метод получения всех складов
+     * @return Список -  {@link Storage}
+     * @see ResponseModel
+     */
 
     @GetMapping("/all")
     @Operation(summary = "Получить информацию о всех складах")
@@ -86,6 +103,11 @@ public interface StorageControllerApi {
     })
     List<Storage> getAll();
 
+    /** Метод удаления склада по {@link Storage#id}
+     * @param id  {@link Storage#id}
+     * @return {@link ResponseModel}
+     */
+
     @DeleteMapping("/{id}")
     @Operation(summary = "Удалить информацию о складе")
     @ApiResponses(value = {
@@ -110,6 +132,13 @@ public interface StorageControllerApi {
     })
     ResponseModel delete(@PathVariable Integer id);
 
+    /** Метод изменения данных о складе
+     * @param storage сущность с {@link Storage#id} для поиска склада по id
+     *                и {@link Storage#name} для установки нового наименования
+     *
+     * @return {@link Storage}
+     * @see ResponseModel
+     */
     @PutMapping
     @Operation(summary = "Изменить информацию о складе")
     @ApiResponses(value = {
