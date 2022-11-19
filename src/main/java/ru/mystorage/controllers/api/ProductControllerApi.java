@@ -16,6 +16,11 @@ import java.util.List;
 
 public interface ProductControllerApi {
 
+    /** Метод добавления нового товара
+     * @param productModel {@link ProductModelWithStorage}
+     * @return {@link Product}
+     * @see ResponseModel
+     */
     @PostMapping
     @Operation(summary = "Добавить новый новар")
     @ApiResponses(value = {
@@ -49,6 +54,12 @@ public interface ProductControllerApi {
     })
     Product add(@RequestBody ProductModelWithStorage productModel);
 
+    /** Метод получения данных о товаре по id
+     * @param id {@link Product#id}
+     * @return {@link Product}
+     * @see ResponseModel
+     */
+
     @GetMapping("/{id}")
     @Operation(summary = "Получить информацию о товаре по id")
     @ApiResponses(value = {
@@ -73,6 +84,9 @@ public interface ProductControllerApi {
     })
     Product get(@PathVariable Integer id);
 
+    /** Метод получения всех товаров
+     * @return список - {@link Product}
+     */
     @GetMapping("/all")
     @Operation(summary = "Получить информацию о всех товарах")
     @ApiResponses(value = {
@@ -97,6 +111,10 @@ public interface ProductControllerApi {
     })
     List<Product> getAll();
 
+    /** Метод удаления данных о товаре по id
+     * @param id {@link Product#id}
+     * @return результат выполнения - {@link ResponseModel}
+     */
     @DeleteMapping("/{id}")
     @Operation(summary = "Удалить информацию о товаре")
     @ApiResponses(value = {
@@ -121,6 +139,13 @@ public interface ProductControllerApi {
     })
     ResponseModel delete(@PathVariable Integer id);
 
+    /** Метод изменения данных о товаре
+     * @param product сущность с {@link Product#id} для поиска товара по id
+     *                и остальными полями для изменения данных
+     *
+     * @return измененная сущность {@link Product}
+     * @see ResponseModel
+     */
     @PutMapping
     @Operation(summary = "Изменить информацию о товаре")
     @ApiResponses(value = {
