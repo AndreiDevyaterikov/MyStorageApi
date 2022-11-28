@@ -8,7 +8,7 @@ import ru.mystorage.models.ResponseModel;
 import java.util.List;
 import java.util.Optional;
 
-public interface IProductService {
+public interface ProductService {
     Product add(ProductModelWithStorage productModel);
 
     Product get(Integer id);

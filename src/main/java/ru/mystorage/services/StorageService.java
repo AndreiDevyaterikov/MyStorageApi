@@ -6,7 +6,7 @@ import ru.mystorage.models.StorageModel;
 
 import java.util.List;
 
-public interface IStorageService {
+public interface StorageService {
     Storage add(StorageModel storageModel);
 
     Storage get(Integer id);

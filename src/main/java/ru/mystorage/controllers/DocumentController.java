@@ -1,32 +1,79 @@
 package ru.mystorage.controllers;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import ru.mystorage.controllers.api.DocumentControllerApi;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import ru.mystorage.models.MovingBetweenStoragesModel;
 import ru.mystorage.models.ReceiptOrSaleModel;
-import ru.mystorage.services.IDocumentService;
 
-@RestController
-@RequestMapping("/document")
-@RequiredArgsConstructor
-public class DocumentController implements DocumentControllerApi {
+public interface DocumentController {
 
-    private final IDocumentService documentService;
+    /**
+     * Эндпоинт создания нового поступления
+     *
+     * @param receiptOrSaleModel модель для создания нового поступления {@link ReceiptOrSaleModel}
+     * @return {@link ReceiptOrSaleModel}
+     */
+    @PostMapping("/receipt")
+    @Operation(summary = "Создать новое поступление")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = ReceiptOrSaleModel.class)))
+                    },
+                    description = "Поступление успешно создано"
+            )
+    })
+    ReceiptOrSaleModel addNewReceipt(@RequestBody ReceiptOrSaleModel receiptOrSaleModel);
 
-    @Override
-    public ReceiptOrSaleModel addNewReceipt(ReceiptOrSaleModel receiptOrSaleModel) {
-        return documentService.addNewReceipt(receiptOrSaleModel);
-    }
+    /**
+     * Эндпоинт создания новой продажи
+     *
+     * @param receiptOrSaleModel модель для создания новой продажи {@link ReceiptOrSaleModel}
+     * @return {@link ReceiptOrSaleModel}
+     */
+    @PostMapping("/sale")
+    @Operation(summary = "Создать новую продажу")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = ReceiptOrSaleModel.class)))
+                    },
+                    description = "Продажа успешно создана"
+            )
+    })
+    ReceiptOrSaleModel addNewSale(@RequestBody ReceiptOrSaleModel receiptOrSaleModel);
 
-    @Override
-    public ReceiptOrSaleModel addNewSale(ReceiptOrSaleModel receiptOrSaleModel) {
-        return documentService.addNewSale(receiptOrSaleModel);
-    }
-
-    @Override
-    public MovingBetweenStoragesModel addNewMoving(MovingBetweenStoragesModel movingBetweenStoragesModel) {
-        return documentService.addNewMoving(movingBetweenStoragesModel);
-    }
+    /**
+     * Эндпоинт создания нового передвижения товара(ов) между складами
+     *
+     * @param movingBetweenStoragesModel модель для создания нового передвижения {@link MovingBetweenStoragesModel}
+     * @return {@link ReceiptOrSaleModel}
+     */
+    @PostMapping("/moveToStorage")
+    @Operation(summary = "Переместить товары с одного склада на другой")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation =
+                                            MovingBetweenStoragesModel.class)))
+                    },
+                    description = "Товары успешно пемещены"
+            )
+    })
+    MovingBetweenStoragesModel addNewMoving(@RequestBody MovingBetweenStoragesModel movingBetweenStoragesModel);
 }

@@ -7,23 +7,22 @@ import ru.mystorage.entities.Product;
 import ru.mystorage.exceptions.MyStorageException;
 import ru.mystorage.models.MovingBetweenStoragesModel;
 import ru.mystorage.models.ReceiptOrSaleModel;
-import ru.mystorage.services.IDocumentService;
 
 import java.util.Objects;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DocumentService implements IDocumentService {
+public class DocumentServiceImpl implements ru.mystorage.services.DocumentService {
 
-    private final StorageService storageService;
-    private final ProductService productService;
+    private final StorageServiceImpl storageServiceImpl;
+    private final ProductServiceImpl productServiceImpl;
 
     @Override
     public ReceiptOrSaleModel addNewReceipt(ReceiptOrSaleModel receiptOrSaleModel) {
 
-        var existStorage = storageService.getByName(receiptOrSaleModel.getStorageName());
-        var productsOnStorage = productService.getAllByStorage(existStorage);
+        var existStorage = storageServiceImpl.getByName(receiptOrSaleModel.getStorageName());
+        var productsOnStorage = productServiceImpl.getAllByStorage(existStorage);
         var products = receiptOrSaleModel.getProducts();
 
         if (Objects.isNull(products) || products.isEmpty()) {
@@ -31,7 +30,7 @@ public class DocumentService implements IDocumentService {
         }
 
         if (productsOnStorage.isEmpty()) {
-            products.forEach(productModel -> productService.save(Product.builder()
+            products.forEach(productModel -> productServiceImpl.save(Product.builder()
                     .name(productModel.getName())
                     .article(productModel.getArticle())
                     .amount(productModel.getAmount())
@@ -41,14 +40,14 @@ public class DocumentService implements IDocumentService {
 
         } else {
             products.forEach(product -> {
-                var productOnStorageOpt = productService.getByNameAndArticle(product.getName(), product.getArticle());
+                var productOnStorageOpt = productServiceImpl.getByNameAndArticle(product.getName(), product.getArticle());
                 if (productOnStorageOpt.isPresent()) {
                     var productOnStorage = productOnStorageOpt.get();
                     productOnStorage.setAmount(productOnStorage.getAmount() + product.getAmount());
                     productOnStorage.setLastBuyPrice(product.getPrice());
-                    productService.save(productOnStorage);
+                    productServiceImpl.save(productOnStorage);
                 } else {
-                    productService.save(Product.builder()
+                    productServiceImpl.save(Product.builder()
                             .name(product.getName())
                             .article(product.getArticle())
                             .amount(product.getAmount())
@@ -63,9 +62,9 @@ public class DocumentService implements IDocumentService {
 
     @Override
     public ReceiptOrSaleModel addNewSale(ReceiptOrSaleModel receiptOrSaleModel) {
-        var existStorage = storageService.getByName(receiptOrSaleModel.getStorageName());
+        var existStorage = storageServiceImpl.getByName(receiptOrSaleModel.getStorageName());
 
-        var productsOnStorage = productService.getAllByStorage(existStorage);
+        var productsOnStorage = productServiceImpl.getAllByStorage(existStorage);
 
         if (productsOnStorage.isEmpty()) {
             throw new MyStorageException(String.format("На указаном складе: %s, отсутствуют товары",
@@ -78,7 +77,7 @@ public class DocumentService implements IDocumentService {
             }
 
             for (var product : products) {
-                var productOnStorageOpt = productService.getByNameAndArticle(product.getName(), product.getArticle());
+                var productOnStorageOpt = productServiceImpl.getByNameAndArticle(product.getName(), product.getArticle());
                 if (productOnStorageOpt.isPresent()) {
                     var productOnStorage = productOnStorageOpt.get();
                     var sellAmount = product.getAmount();
@@ -96,7 +95,7 @@ public class DocumentService implements IDocumentService {
                         productOnStorage.setAmount(productOnStorage.getAmount() - product.getAmount());
                     }
                     productOnStorage.setLastSellPrice(product.getPrice());
-                    productService.save(productOnStorage);
+                    productServiceImpl.save(productOnStorage);
                 } else {
                     throw new MyStorageException(String.format("Товар с именем %s и артикулом %s не найден для продажи",
                             product.getName(), product.getArticle()), 404);
@@ -108,21 +107,21 @@ public class DocumentService implements IDocumentService {
 
     @Override
     public MovingBetweenStoragesModel addNewMoving(MovingBetweenStoragesModel movingBetweenStoragesModel) {
-        var previousStorage = storageService.getByName(movingBetweenStoragesModel.getFromStorageName());
-        var nextStorage = storageService.getByName(movingBetweenStoragesModel.getToStorageName());
-        var productsOnNextStorage = productService.getAllByStorage(nextStorage);
+        var previousStorage = storageServiceImpl.getByName(movingBetweenStoragesModel.getFromStorageName());
+        var nextStorage = storageServiceImpl.getByName(movingBetweenStoragesModel.getToStorageName());
+        var productsOnNextStorage = productServiceImpl.getAllByStorage(nextStorage);
         var movingProducts = movingBetweenStoragesModel.getProducts();
 
         //если на новом складе нет товаров
         if (productsOnNextStorage.isEmpty()) {
             movingProducts.forEach(movingProduct -> {
-                var productOnPreviousStorageOpt = productService.getByNameAndArticle(movingProduct.getName(),
+                var productOnPreviousStorageOpt = productServiceImpl.getByNameAndArticle(movingProduct.getName(),
                         movingProduct.getArticle());
                 //если на предыдущем складе есть товар, который мы хотим переместить
                 if (productOnPreviousStorageOpt.isPresent()) {
                     var productOnPreviousStorage = productOnPreviousStorageOpt.get();
                     productOnPreviousStorage.setAmount(productOnPreviousStorage.getAmount() - movingProduct.getAmount());
-                    productService.save(Product.builder()
+                    productServiceImpl.save(Product.builder()
                             .name(productOnPreviousStorage.getName())
                             .article(productOnPreviousStorage.getArticle())
                             .amount(movingProduct.getAmount())
@@ -130,7 +129,7 @@ public class DocumentService implements IDocumentService {
                             .lastSellPrice(productOnPreviousStorage.getLastSellPrice())
                             .storage(nextStorage)
                             .build());
-                    productService.save(productOnPreviousStorage);
+                    productServiceImpl.save(productOnPreviousStorage);
                 } else {
                     throw new MyStorageException(String.format("Не найдено товара %s для перемещения на склад %s",
                             movingProduct.getName(), nextStorage.getName()), 404);
@@ -138,17 +137,17 @@ public class DocumentService implements IDocumentService {
             });
         } else {
             movingProducts.forEach(movingProduct -> productsOnNextStorage.forEach(existProductOnNextStorage -> {
-                var productOnPreviousStorageOpt = productService.getByNameAndArticleAndStorage(movingProduct.getName(),
+                var productOnPreviousStorageOpt = productServiceImpl.getByNameAndArticleAndStorage(movingProduct.getName(),
                         movingProduct.getArticle(), previousStorage);
                 if (productOnPreviousStorageOpt.isPresent()) {
                     var productOnPreviousStorage = productOnPreviousStorageOpt.get();
                     if (existProductOnNextStorage.getName().equals(productOnPreviousStorage.getName())
                             && existProductOnNextStorage.getArticle().equals(productOnPreviousStorage.getArticle())) {
                         existProductOnNextStorage.setAmount(existProductOnNextStorage.getAmount() + productOnPreviousStorage.getAmount());
-                        productService.save(existProductOnNextStorage);
+                        productServiceImpl.save(existProductOnNextStorage);
                     } else {
                         productOnPreviousStorage.setStorage(nextStorage);
-                        productService.save(productOnPreviousStorage);
+                        productServiceImpl.save(productOnPreviousStorage);
                     }
                 }
             }));
