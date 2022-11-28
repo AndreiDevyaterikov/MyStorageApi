@@ -17,7 +17,7 @@ import java.util.Objects;
 public class DocumentServiceImpl implements DocumentService {
 
     private final StorageServiceImpl storageServiceImpl;
-    private final ProductService productService;
+    private final ProductServiceImpl productService;
 
     @Override
     public ReceiptOrSaleModel addNewReceipt(ReceiptOrSaleModel receiptOrSaleModel) {
