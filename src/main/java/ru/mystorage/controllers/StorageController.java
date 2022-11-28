@@ -72,7 +72,7 @@ public interface StorageController {
                     description = "Такого склада не существует"
             )
     })
-    Storage get(@PathVariable Integer id);
+    Storage getById(@PathVariable Integer id);
 
     /** Эндпоинт получения всех складов
      * @return Список -  {@link Storage}

@@ -9,7 +9,7 @@ import java.util.List;
 public interface StorageService {
     Storage add(StorageModel storageModel);
 
-    Storage get(Integer id);
+    Storage getById(Integer id);
 
     Storage getByName(String storageName);
 

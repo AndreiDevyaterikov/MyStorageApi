@@ -24,8 +24,8 @@ public class StorageControllerImpl implements StorageController {
     }
 
     @Override
-    public Storage get(Integer id) {
-        return storageService.get(id);
+    public Storage getById(Integer id) {
+        return storageService.getById(id);
     }
 
     @Override

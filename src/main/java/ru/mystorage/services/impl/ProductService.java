@@ -10,7 +10,7 @@ import ru.mystorage.exceptions.MyStorageException;
 import ru.mystorage.models.ProductModelWithStorage;
 import ru.mystorage.models.ResponseModel;
 import ru.mystorage.repositories.ProductRepository;
-import ru.mystorage.services.ProductService;
+import ru.mystorage.services.StorageService;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,15 +18,15 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ProductServiceImpl implements ProductService {
+public class ProductService implements ru.mystorage.services.ProductService {
 
     private final ProductRepository productRepository;
-    private final StorageServiceImpl storageServiceImpl;
+    private final StorageService storageService;
 
 
     @Override
     public Product add(ProductModelWithStorage productModel) {
-        var existStorage = storageServiceImpl.getByName(productModel.getStorageName());
+        var existStorage = storageService.getByName(productModel.getStorageName());
         var existProductOpt = productRepository.findByNameAndArticle(productModel.getName(), productModel.getArticle());
         if (existProductOpt.isPresent()) {
             var existProduct = existProductOpt.get();
@@ -132,7 +132,7 @@ public class ProductServiceImpl implements ProductService {
                 existProduct.setAmount(product.getAmount());
             }
             if (product.getStorage() != null) {
-                var storage = storageServiceImpl.get(product.getStorage().getId());
+                var storage = storageService.getById(product.getStorage().getId());
                 existProduct.setStorage(storage);
             }
             productRepository.save(existProduct);

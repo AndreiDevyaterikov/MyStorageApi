@@ -33,7 +33,7 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public Storage get(Integer id) {
+    public Storage getById(Integer id) {
         var existStorage = storageRepository.findById(id);
         if (existStorage.isPresent()) {
             return existStorage.get();
@@ -65,14 +65,14 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public ResponseModel delete(Integer id) {
-        var storage = get(id);
+        var storage = getById(id);
         storageRepository.delete(storage);
         return new ResponseModel(200, "Информация о складе успешно удалена");
     }
 
     @Override
     public Storage edit(Storage storage) {
-        var existStorage = get(storage.getId());
+        var existStorage = getById(storage.getId());
         if (storage.getName() == null) {
             throw new MyStorageException("Вы не указали новое имя склада", 405);
         }
