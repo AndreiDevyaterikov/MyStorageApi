@@ -7,13 +7,14 @@ import ru.mystorage.entities.Product;
 import ru.mystorage.exceptions.MyStorageException;
 import ru.mystorage.models.MovingBetweenStoragesModel;
 import ru.mystorage.models.ReceiptOrSaleModel;
+import ru.mystorage.services.DocumentService;
 
 import java.util.Objects;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DocumentServiceImpl implements ru.mystorage.services.DocumentService {
+public class DocumentServiceImpl implements DocumentService {
 
     private final StorageServiceImpl storageServiceImpl;
     private final ProductServiceImpl productServiceImpl;

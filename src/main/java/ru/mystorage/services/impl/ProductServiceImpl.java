@@ -10,6 +10,7 @@ import ru.mystorage.exceptions.MyStorageException;
 import ru.mystorage.models.ProductModelWithStorage;
 import ru.mystorage.models.ResponseModel;
 import ru.mystorage.repositories.ProductRepository;
+import ru.mystorage.services.ProductService;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +18,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ProductServiceImpl implements ru.mystorage.services.ProductService {
+public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final StorageServiceImpl storageServiceImpl;

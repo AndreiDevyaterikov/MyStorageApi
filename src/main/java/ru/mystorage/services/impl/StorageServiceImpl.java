@@ -9,13 +9,14 @@ import ru.mystorage.exceptions.MyStorageException;
 import ru.mystorage.models.ResponseModel;
 import ru.mystorage.models.StorageModel;
 import ru.mystorage.repositories.StorageRepository;
+import ru.mystorage.services.StorageService;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class StorageServiceImpl implements ru.mystorage.services.StorageService {
+public class StorageServiceImpl implements StorageService {
     private final StorageRepository storageRepository;
 
     @Override
