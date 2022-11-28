@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import ru.mystorage.constants.Constants;
 import ru.mystorage.entities.Storage;
 import ru.mystorage.exceptions.MyStorageException;
 import ru.mystorage.models.ResponseModel;
@@ -23,7 +24,9 @@ public class StorageServiceImpl implements StorageService {
     public Storage add(StorageModel storageModel) {
         var existStorage = storageRepository.findByName(storageModel.getStorageName());
         if (existStorage.isPresent()) {
-            throw new MyStorageException("Такой склад уже существует", 405);
+            var message = String.format(Constants.STORAGE_ALREADY_EXIST, storageModel.getStorageName());
+            log.info(message);
+            throw new MyStorageException(message, 405);
         }
         var storageEntity = Storage.builder()
                 .name(storageModel.getStorageName())
@@ -38,7 +41,9 @@ public class StorageServiceImpl implements StorageService {
         if (existStorage.isPresent()) {
             return existStorage.get();
         } else {
-            throw new MyStorageException("Такого склада не существует", 404);
+            var message = String.format(Constants.NOT_FOUND_STORAGE_BY_ID, id);
+            log.info(message);
+            throw new MyStorageException(message, 404);
         }
     }
 
@@ -48,8 +53,9 @@ public class StorageServiceImpl implements StorageService {
         if (existStorage.isPresent()) {
             return existStorage.get();
         } else {
-            log.info(String.format("Такого склада не существует: %s", storageName));
-            throw new MyStorageException(String.format("Такого склада не существует: %s", storageName), 404);
+            var message = String.format(Constants.NOT_FOUND_STORAGE_BY_NAME, storageName);
+            log.info(message);
+            throw new MyStorageException(message, 404);
         }
     }
 
@@ -57,7 +63,9 @@ public class StorageServiceImpl implements StorageService {
     public List<Storage> getAll() {
         var storages = storageRepository.findAll();
         if (CollectionUtils.isEmpty(storages)) {
-            throw new MyStorageException("Склады не найдены", 404);
+            var message = String.format(Constants.NOT_FOUND_STORAGES);
+            log.info(message);
+            throw new MyStorageException(message, 404);
         } else {
             return storages;
         }
@@ -67,7 +75,9 @@ public class StorageServiceImpl implements StorageService {
     public ResponseModel delete(Integer id) {
         var storage = getById(id);
         storageRepository.delete(storage);
-        return new ResponseModel(200, "Информация о складе успешно удалена");
+        var message = String.format(Constants.STORAGE_HAS_BEEN_DELETED, storage.getName());
+        log.info(message);
+        return new ResponseModel(200, message);
     }
 
     @Override

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import ru.mystorage.entities.Storage;
 import ru.mystorage.models.ResponseModel;
@@ -13,9 +14,12 @@ import ru.mystorage.models.StorageModel;
 
 import java.util.List;
 
+@Tag(name = "Storage Controller", description = "Контроллер для взаимодействия с сущностью \"Склад\"")
 public interface StorageController {
 
-    /** Эндпоинт добавления нового склада в систему
+    /**
+     * Эндпоинт добавления нового склада в систему
+     *
      * @param storageModel {@link StorageModel}
      * @return {@link Storage}
      * @see ResponseModel
@@ -45,8 +49,10 @@ public interface StorageController {
     Storage add(@RequestBody StorageModel storageModel);
 
 
-    /** Эндпоинт поиска склада по id склада
-     * @param id  {@link Storage#id}
+    /**
+     * Эндпоинт поиска склада по id склада
+     *
+     * @param id {@link Storage#id}
      * @return {@link Storage}
      * @see ResponseModel
      */
@@ -74,7 +80,9 @@ public interface StorageController {
     })
     Storage getById(@PathVariable Integer id);
 
-    /** Эндпоинт получения всех складов
+    /**
+     * Эндпоинт получения всех складов
+     *
      * @return Список -  {@link Storage}
      * @see ResponseModel
      */
@@ -103,8 +111,10 @@ public interface StorageController {
     })
     List<Storage> getAll();
 
-    /** Эндпоинт удаления склада по {@link Storage#id}
-     * @param id  {@link Storage#id}
+    /**
+     * Эндпоинт удаления склада по {@link Storage#id}
+     *
+     * @param id {@link Storage#id}
      * @return {@link ResponseModel}
      */
 
@@ -132,10 +142,11 @@ public interface StorageController {
     })
     ResponseModel delete(@PathVariable Integer id);
 
-    /** Эндпоинт изменения данных о складе
+    /**
+     * Эндпоинт изменения данных о складе
+     *
      * @param storage сущность с {@link Storage#id} для поиска склада по id
      *                и {@link Storage#name} для установки нового наименования
-     *
      * @return {@link Storage}
      * @see ResponseModel
      */

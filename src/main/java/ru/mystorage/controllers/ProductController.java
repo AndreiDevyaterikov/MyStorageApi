@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import ru.mystorage.models.ResponseModel;
 
 import java.util.List;
 
+@Tag(name = "Product Controller", description = "Контроллер для взаимодействия с сущностью \"Товар\"")
 public interface ProductController {
 
     /**
@@ -182,5 +184,5 @@ public interface ProductController {
                     description = "Такого товара не существует"
             )
     })
-    Product edit(Product product);
+    Product edit(@RequestBody  Product product);
 }
