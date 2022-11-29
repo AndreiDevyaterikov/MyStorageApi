@@ -97,12 +97,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAll() {
-        var products = productRepository.findAll();
-        if (CollectionUtils.isEmpty(products)) {
-            throw new MyStorageException("Товары не найдены", 404);
-        } else {
-            return products;
-        }
+        return productRepository.findAll();
     }
 
     @Override

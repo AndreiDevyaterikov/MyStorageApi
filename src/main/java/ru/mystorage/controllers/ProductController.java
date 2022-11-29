@@ -111,15 +111,6 @@ public interface ProductController {
                                     array = @ArraySchema(schema = @Schema(implementation = Product.class)))
                     },
                     description = "Информация о всех товарах"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    content = {
-                            @Content(
-                                    mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = ResponseModel.class)))
-                    },
-                    description = "Товары не найдены"
             )
     })
     List<Product> getAll();

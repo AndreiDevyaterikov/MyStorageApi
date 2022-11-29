@@ -98,15 +98,6 @@ public interface StorageController {
                                     array = @ArraySchema(schema = @Schema(implementation = Storage.class)))
                     },
                     description = "Информация о всех складах"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    content = {
-                            @Content(
-                                    mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = ResponseModel.class)))
-                    },
-                    description = "Склады не найдены"
             )
     })
     List<Storage> getAll();

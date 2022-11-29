@@ -61,14 +61,7 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public List<Storage> getAll() {
-        var storages = storageRepository.findAll();
-        if (CollectionUtils.isEmpty(storages)) {
-            var message = String.format(Constants.NOT_FOUND_STORAGES);
-            log.info(message);
-            throw new MyStorageException(message, 404);
-        } else {
-            return storages;
-        }
+        return storageRepository.findAll();
     }
 
     @Override
