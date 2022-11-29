@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mystorage.controllers.DocumentController;
 import ru.mystorage.models.MovingBetweenStoragesModel;
-import ru.mystorage.models.ReceiptOrSaleModel;
+import ru.mystorage.models.ReceiptModel;
 import ru.mystorage.services.DocumentService;
 
 @RestController
@@ -16,13 +16,13 @@ public class DocumentControllerImpl implements DocumentController {
     private final DocumentService documentService;
 
     @Override
-    public ReceiptOrSaleModel addNewReceipt(ReceiptOrSaleModel receiptOrSaleModel) {
-        return documentService.addNewReceipt(receiptOrSaleModel);
+    public ReceiptModel addNewReceipt(ReceiptModel receiptModel) {
+        return documentService.addNewReceipt(receiptModel);
     }
 
     @Override
-    public ReceiptOrSaleModel addNewSale(ReceiptOrSaleModel receiptOrSaleModel) {
-        return documentService.addNewSale(receiptOrSaleModel);
+    public ReceiptModel addNewSale(ReceiptModel receiptModel) {
+        return documentService.addNewSale(receiptModel);
     }
 
     @Override

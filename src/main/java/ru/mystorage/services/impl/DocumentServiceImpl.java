@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.mystorage.entities.Product;
 import ru.mystorage.exceptions.MyStorageException;
 import ru.mystorage.models.MovingBetweenStoragesModel;
-import ru.mystorage.models.ReceiptOrSaleModel;
+import ru.mystorage.models.ReceiptModel;
 import ru.mystorage.services.DocumentService;
 
 import java.util.Objects;
@@ -20,11 +20,11 @@ public class DocumentServiceImpl implements DocumentService {
     private final ProductServiceImpl productService;
 
     @Override
-    public ReceiptOrSaleModel addNewReceipt(ReceiptOrSaleModel receiptOrSaleModel) {
+    public ReceiptModel addNewReceipt(ReceiptModel receiptModel) {
 
-        var existStorage = storageServiceImpl.getByName(receiptOrSaleModel.getStorageName());
+        var existStorage = storageServiceImpl.getByName(receiptModel.getStorageName());
         var productsOnStorage = productService.getAllByStorage(existStorage);
-        var products = receiptOrSaleModel.getProducts();
+        var products = receiptModel.getProducts();
 
         if (Objects.isNull(products) || products.isEmpty()) {
             throw new MyStorageException("Вы не указали товары для поступления", 400);
@@ -58,12 +58,12 @@ public class DocumentServiceImpl implements DocumentService {
                 }
             });
         }
-        return receiptOrSaleModel;
+        return receiptModel;
     }
 
     @Override
-    public ReceiptOrSaleModel addNewSale(ReceiptOrSaleModel receiptOrSaleModel) {
-        var existStorage = storageServiceImpl.getByName(receiptOrSaleModel.getStorageName());
+    public ReceiptModel addNewSale(ReceiptModel receiptModel) {
+        var existStorage = storageServiceImpl.getByName(receiptModel.getStorageName());
 
         var productsOnStorage = productService.getAllByStorage(existStorage);
 
@@ -71,7 +71,7 @@ public class DocumentServiceImpl implements DocumentService {
             throw new MyStorageException(String.format("На указаном складе: %s, отсутствуют товары",
                     existStorage.getName()), 404);
         } else {
-            var products = receiptOrSaleModel.getProducts();
+            var products = receiptModel.getProducts();
 
             if (Objects.isNull(products) || products.isEmpty()) {
                 throw new MyStorageException("Вы не указали товары для продажи", 400);
@@ -102,7 +102,7 @@ public class DocumentServiceImpl implements DocumentService {
                             product.getName(), product.getArticle()), 404);
                 }
             }
-            return receiptOrSaleModel;
+            return receiptModel;
         }
     }
 

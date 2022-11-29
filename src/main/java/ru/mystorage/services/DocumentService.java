@@ -1,13 +1,13 @@
 package ru.mystorage.services;
 
 import ru.mystorage.models.MovingBetweenStoragesModel;
-import ru.mystorage.models.ReceiptOrSaleModel;
+import ru.mystorage.models.ReceiptModel;
 
 public interface DocumentService {
 
-    ReceiptOrSaleModel addNewReceipt(ReceiptOrSaleModel receiptOrSaleModel);
+    ReceiptModel addNewReceipt(ReceiptModel receiptModel);
 
-    ReceiptOrSaleModel addNewSale(ReceiptOrSaleModel receiptOrSaleModel);
+    ReceiptModel addNewSale(ReceiptModel receiptModel);
 
     MovingBetweenStoragesModel addNewMoving(MovingBetweenStoragesModel movingBetweenStoragesModel);
 }

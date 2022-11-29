@@ -7,7 +7,8 @@ import java.util.List;
 
 @AllArgsConstructor
 @Getter
-public class ReceiptOrSaleModel {
+//Класс описывающий продажу или поступление товара
+public class ReceiptModel {
     private Integer number;
     private String storageName;
     private List<ProductModel> products;

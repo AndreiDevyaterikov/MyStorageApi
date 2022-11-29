@@ -9,15 +9,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.mystorage.models.MovingBetweenStoragesModel;
-import ru.mystorage.models.ReceiptOrSaleModel;
+import ru.mystorage.models.ReceiptModel;
 
 public interface DocumentController {
 
     /**
      * Эндпоинт создания нового поступления
      *
-     * @param receiptOrSaleModel модель для создания нового поступления {@link ReceiptOrSaleModel}
-     * @return {@link ReceiptOrSaleModel}
+     * @param receiptModel модель для создания нового поступления {@link ReceiptModel}
+     * @return {@link ReceiptModel}
      */
     @PostMapping("/receipt")
     @Operation(summary = "Создать новое поступление")
@@ -27,18 +27,18 @@ public interface DocumentController {
                     content = {
                             @Content(
                                     mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = ReceiptOrSaleModel.class)))
+                                    array = @ArraySchema(schema = @Schema(implementation = ReceiptModel.class)))
                     },
                     description = "Поступление успешно создано"
             )
     })
-    ReceiptOrSaleModel addNewReceipt(@RequestBody ReceiptOrSaleModel receiptOrSaleModel);
+    ReceiptModel addNewReceipt(@RequestBody ReceiptModel receiptModel);
 
     /**
      * Эндпоинт создания новой продажи
      *
-     * @param receiptOrSaleModel модель для создания новой продажи {@link ReceiptOrSaleModel}
-     * @return {@link ReceiptOrSaleModel}
+     * @param receiptModel модель для создания новой продажи {@link ReceiptModel}
+     * @return {@link ReceiptModel}
      */
     @PostMapping("/sale")
     @Operation(summary = "Создать новую продажу")
@@ -48,18 +48,18 @@ public interface DocumentController {
                     content = {
                             @Content(
                                     mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = ReceiptOrSaleModel.class)))
+                                    array = @ArraySchema(schema = @Schema(implementation = ReceiptModel.class)))
                     },
                     description = "Продажа успешно создана"
             )
     })
-    ReceiptOrSaleModel addNewSale(@RequestBody ReceiptOrSaleModel receiptOrSaleModel);
+    ReceiptModel addNewSale(@RequestBody ReceiptModel receiptModel);
 
     /**
      * Эндпоинт создания нового передвижения товара(ов) между складами
      *
      * @param movingBetweenStoragesModel модель для создания нового передвижения {@link MovingBetweenStoragesModel}
-     * @return {@link ReceiptOrSaleModel}
+     * @return {@link ReceiptModel}
      */
     @PostMapping("/moveToStorage")
     @Operation(summary = "Переместить товары с одного склада на другой")
