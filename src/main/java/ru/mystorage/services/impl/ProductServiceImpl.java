@@ -3,7 +3,6 @@ package ru.mystorage.services.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import ru.mystorage.entities.Product;
 import ru.mystorage.entities.Storage;
 import ru.mystorage.exceptions.MyStorageException;
@@ -27,7 +26,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product add(ProductModelWithStorage productModel) {
-        var existStorage = storageService.getByName(productModel.getStorageName());
+        var existStorage = storageService.getById(productModel.getStorageId());
         var existProductOpt = productRepository.findByNameAndArticle(productModel.getName(), productModel.getArticle());
         if (existProductOpt.isPresent()) {
             var existProduct = existProductOpt.get();

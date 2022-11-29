@@ -3,7 +3,6 @@ package ru.mystorage.services.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import ru.mystorage.constants.Constants;
 import ru.mystorage.entities.Storage;
 import ru.mystorage.exceptions.MyStorageException;
@@ -41,7 +40,7 @@ public class StorageServiceImpl implements StorageService {
         if (existStorage.isPresent()) {
             return existStorage.get();
         } else {
-            var message = String.format(Constants.NOT_FOUND_STORAGE_BY_ID, id);
+            var message = String.format(Constants.NOT_FOUND_STORAGE_WITH_ID, id);
             log.info(message);
             throw new MyStorageException(message, 404);
         }
@@ -53,7 +52,7 @@ public class StorageServiceImpl implements StorageService {
         if (existStorage.isPresent()) {
             return existStorage.get();
         } else {
-            var message = String.format(Constants.NOT_FOUND_STORAGE_BY_NAME, storageName);
+            var message = String.format(Constants.NOT_FOUND_STORAGE_WITH_NAME, storageName);
             log.info(message);
             throw new MyStorageException(message, 404);
         }

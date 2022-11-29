@@ -8,10 +8,10 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class ProductModelWithStorage extends ProductModel {
-    public ProductModelWithStorage(String name, String article, Integer amount, BigDecimal price, String storageName) {
+    public ProductModelWithStorage(String name, String article, Integer amount, BigDecimal price, Integer storageId) {
         super(name, article, amount, price);
-        this.storageName = storageName;
+        this.storageId = storageId;
     }
 
-    private String storageName;
+    private Integer storageId;
 }
