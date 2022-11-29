@@ -3,6 +3,7 @@ package ru.mystorage.services.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.mystorage.constants.Constants;
 import ru.mystorage.entities.Product;
 import ru.mystorage.entities.Storage;
 import ru.mystorage.exceptions.MyStorageException;
@@ -30,11 +31,9 @@ public class ProductServiceImpl implements ProductService {
         var existProductOpt = productRepository.findByNameAndArticle(productModel.getName(), productModel.getArticle());
         if (existProductOpt.isPresent()) {
             var existProduct = existProductOpt.get();
-            existProduct.setStorage(existStorage);
-            existProduct.setAmount(existProduct.getAmount() + productModel.getAmount());
-            existProduct.setLastBuyPrice(productModel.getPrice());
-            productRepository.save(existProduct);
-            return existProduct;
+            var message = String.format(Constants.PRODUCT_ALREADY_EXIST, existProduct.getName(), existProduct.getArticle());
+            log.info(message);
+            throw new MyStorageException(message, 405);
         } else {
             var newProduct = Product.builder()
                     .name(productModel.getName())
