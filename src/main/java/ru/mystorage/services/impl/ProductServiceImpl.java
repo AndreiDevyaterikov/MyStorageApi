@@ -28,10 +28,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product add(ProductModelWithStorage productModel) {
         var existStorage = storageService.getById(productModel.getStorageId());
-        var existProductOpt = productRepository.findByNameAndArticle(productModel.getName(), productModel.getArticle());
+        var existProductOpt = productRepository.findByNameAndArticle(
+                productModel.getName(),
+                productModel.getArticle()
+        );
         if (existProductOpt.isPresent()) {
             var existProduct = existProductOpt.get();
-            var message = String.format(Constants.PRODUCT_ALREADY_EXIST, existProduct.getName(), existProduct.getArticle());
+            var message = String.format(Constants.PRODUCT_ALREADY_EXIST, existProduct.getName(),
+                    existProduct.getArticle());
             log.info(message);
             throw new MyStorageException(message, 405);
         } else {
@@ -53,7 +57,9 @@ public class ProductServiceImpl implements ProductService {
         if (existProduct.isPresent()) {
             return existProduct.get();
         } else {
-            throw new MyStorageException("Такого товара не существует", 404);
+            var message = String.format(Constants.NOT_FOUND_PRODUCT_WITH_ID, id);
+            log.info(message);
+            throw new MyStorageException(message, 404);
         }
     }
 
@@ -79,7 +85,9 @@ public class ProductServiceImpl implements ProductService {
         if (existProduct.isPresent()) {
             return existProduct.get();
         } else {
-            throw new MyStorageException("Товара на данном не существует", 404);
+            var message = String.format(Constants.NOT_FOUND_PRODUCT_ON_STORAGE, storage.getName());
+            log.info(message);
+            throw new MyStorageException(message, 404);
         }
     }
 
@@ -102,7 +110,8 @@ public class ProductServiceImpl implements ProductService {
     public ResponseModel delete(Integer id) {
         var product = get(id);
         productRepository.delete(product);
-        return new ResponseModel(200, "Информация о товаре успешно удалена");
+        var message = String.format(Constants.PRODUCT_HAS_BEEN_DELETED, product.getName());
+        return new ResponseModel(200, message);
     }
 
     @Override
@@ -132,7 +141,9 @@ public class ProductServiceImpl implements ProductService {
             productRepository.save(existProduct);
             return existProduct;
         } else {
-            throw new MyStorageException("Такого товара не существует", 404);
+            var message = String.format(Constants.NOT_FOUND_PRODUCT_WITH_ID, product.getId());
+            log.info(message);
+            throw new MyStorageException(message, 404);
         }
     }
 }

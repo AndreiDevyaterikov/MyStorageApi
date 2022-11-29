@@ -76,7 +76,9 @@ public class StorageServiceImpl implements StorageService {
     public Storage edit(Storage storage) {
         var existStorage = getById(storage.getId());
         if (storage.getName() == null) {
-            throw new MyStorageException("Вы не указали новое имя склада", 405);
+            var message = Constants.NOT_SET_NEW_STORAGE_NAME;
+            log.info(message);
+            throw new MyStorageException(message, 405);
         }
         existStorage.setName(storage.getName());
         storageRepository.save(existStorage);
