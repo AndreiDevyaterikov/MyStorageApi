@@ -6,11 +6,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.mystorage.models.MovingBetweenStoragesModel;
 import ru.mystorage.models.ReceiptModel;
 
+@Tag(name = "Document Controller", description = "Контроллер для взаимодействия с документами")
 public interface DocumentController {
 
     /**
